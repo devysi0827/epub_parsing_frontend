@@ -1,6 +1,13 @@
 import './App.css';
 import axios from 'axios';
 import React, { useState } from 'react';
+import styled from 'styled-components';
+import { observable } from 'mobx';
+import { observer } from 'mobx-react';
+
+import MainApp from './Component/MainApp'
+import Sidebar from './Component/Sidebar'
+
 // import logo from './logo.svg';
 // import { render } from "react-dom"
 // import {
@@ -46,15 +53,21 @@ function App() {
     })
   }
 
-  const test = function(){
-    var testVar =  document.getElementById("image");
-    console.log(testVar)
-    console.log(imageUrl)
-  }
+  // const test = function(){
+  //   var testVar =  document.getElementById("image");
+  //   console.log(testVar)
+  //   console.log(imageUrl)
+  // }
   
   return (
     <div className="App">
-      <input style={{backgroundColor:'red'}} type="file" id="file" name="file" onChange={sendToBack} multiple />
+      <LeftDiv>
+        <Sidebar/>
+      </LeftDiv>
+      <MainApp/>
+
+
+      {/* <input style={{backgroundColor:'red'}} type="file" id="file" name="file" onChange={sendToBack} multiple />
       <hr/>
       <p style= {{color:"green"}}>spine</p>
       <div id="spine">{spine}</div>
@@ -73,10 +86,18 @@ function App() {
           /> 
           : ''}
       </div>
-      <button onClick={test}>test</button>
+      <button onClick={test}>test</button> */}
     </div>
     
   );
 }
 
 export default App;
+
+
+const LeftDiv = styled.div`
+  left:0;
+  width: 100px;
+  border: 1px solid black;
+  min-height: 100vh;
+`;
