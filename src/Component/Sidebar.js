@@ -10,7 +10,7 @@ function Sidebar() {
   const [title,setTitle] = useState("title is null!!")
   const [spine,setSpine] = useState(['null'])
   const [manifest,setManifest] = useState(['null'])
-  const [content,setContent] = useState("content is null!!!")
+  const [content,setContent] = useState(['null'])
   const [imageUrl,setImageUrl] = useState("")
 
   // 1. 백엔드로 파일 보내기
@@ -60,7 +60,7 @@ function Sidebar() {
         console.log(response)
         if (response.data.file === 'html') {
 
-          setContent(response.data.data)
+          setContent(response.data.ars)
         }
 
         // setTitle(response.data.title)
@@ -74,6 +74,14 @@ function Sidebar() {
         console.log(err)
       })
     }
+
+    // ///
+    // const render = 
+    //     content.map((paragraph,index) =>
+    //       <li key= {index}>
+    //         <input type="text" style={{height:200, width:200}} defaultValue={paragraph}></input> 
+    //       </li>
+    //   )}
 
 
   return (
@@ -102,7 +110,14 @@ function Sidebar() {
       </div>
       <hr/>
       <p style= {{color:"green"}}>content</p>
-      <div id="content"> {content} </div>
+      <div id="content">
+        {/* {content} */}
+        {content.map((paragraph,index) =>
+            <li key= {index}>
+              <input type="text" style={{height:200, width:200}} defaultValue={paragraph}></input> 
+            </li>
+        )}
+      </div>
       <hr/>
       <p style= {{color:"green"}}>image</p>
       <div id="image"> 
