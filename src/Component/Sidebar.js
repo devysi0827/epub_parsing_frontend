@@ -52,22 +52,17 @@ function Sidebar() {
       fileData.append("name",file)
       
        // 전송
-      axios.post('/loader/finder/', fileData, {
+      axios.post('/loader/find/', fileData, {
         headers: {
           'Content-Type' : 'multipart/form-data'
         }
       }).then ((response) => {
         console.log(response)
         if (response.data.file === 'html') {
-
+          
           setContent(response.data.ars)
         }
-
-        // setTitle(response.data.title)
-        // setSpine(response.data.spine)
-        // setManifest(response.data.manifest)
         else {
-
           setImageUrl(response.data.data)
         }
       }).catch ((err) => {
@@ -75,14 +70,14 @@ function Sidebar() {
       })
     }
 
-    // ///
-    // const render = 
-    //     content.map((paragraph,index) =>
-    //       <li key= {index}>
-    //         <input type="text" style={{height:200, width:200}} defaultValue={paragraph}></input> 
-    //       </li>
-    //   )}
-
+    const test = function() {
+      var step;
+      for (step = 0; step < content.length; step++) {
+        var temp = document.getElementById(step)
+        temp.innerHTML = content[step]
+        // console.log(temp)
+      }
+    }
 
   return (
     <div>
@@ -111,10 +106,10 @@ function Sidebar() {
       <hr/>
       <p style= {{color:"green"}}>content</p>
       <div id="content">
-        {/* {content} */}
         {content.map((paragraph,index) =>
             <li key= {index}>
-              <input type="text" style={{height:200, width:200}} defaultValue={paragraph}></input> 
+              <p id={index}>1</p>
+              {/* <input type="text" style={{height:200, width:200}} defaultValue={paragraph}></input>  */}
             </li>
         )}
       </div>
@@ -130,6 +125,8 @@ function Sidebar() {
           /> 
           : ''}
       </div>
+
+      <button onClick={test}>mybutton</button>
     </div>
   )
 }
