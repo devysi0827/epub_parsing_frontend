@@ -1,19 +1,54 @@
 import React, { useState } from 'react';
+import { useRecoilState } from 'recoil';
 import axios from 'axios';
-// import styled from 'styled-components';
-// import { observable } from 'mobx';
-// import { observer } from 'mobx-react';
+import {
+  titleState,
+  creatorState,
+  ManifestState,
+  ContentState,
+  ImageState,
+  ImageListState
+} from "../State/RecoilState"
+
+// import Component
+import Metadata from './Metadata';
+import TOC from './TOC';
+import ReactP from './ReactP';
 
 function Sidebar() {
   
-  /// 0. 변수모음
-  const [title,setTitle] = useState("title is null!!")
-  const [spine,setSpine] = useState(['null'])
-  const [manifest,setManifest] = useState(['null'])
-  const [content,setContent] = useState(['null'])
-  const [imageUrl,setImageUrl] = useState("")
+  /// 0. metadata 변수
+  const [title,setTitle] = useRecoilState(titleState)
+  const [creator,setCreator] = useRecoilState(creatorState)
 
-  // 1. 백엔드로 파일 보내기
+  // Toc 변수
+  const [manifest,setManifest] = useRecoilState(ManifestState)
+  const [imageList,setImageList] = useRecoilState(ImageListState)
+
+  // const [spine,setSpine] = useState(['null'])
+  const [content,setContent] = useRecoilState(ContentState )
+  const [imageUrl,setImageUrl] = useRecoilState(ImageState)
+
+  const GetImageList = function(file) {
+    var fileData = new FormData();
+    var uploadFile =  document.getElementById("file");
+    fileData.append("file",uploadFile.files[0], 'myfile')
+    fileData.append("name",file)
+    
+     // 전송
+    axios.post('/loader/image/', fileData, {
+      headers: {
+        'Content-Type' : 'multipart/form-data'
+      }
+    }).then ((response) => {
+      console.log(response.data)
+      setImageList(response.data)
+    }).catch ((err) => {
+      console.log(err)
+    })
+  }
+
+  // 1. 백엔드로 파일 보내기 ==> 
   const sendToBack = function() {
 
     // 세팅
@@ -29,104 +64,31 @@ function Sidebar() {
     }).then ((response) => {
       console.log(response)
       setTitle(response.data.title)
-      setSpine(response.data.spine)
+      setCreator(response.data.creator)
       setManifest(response.data.manifest)
-      // setContent(response.data.xhtml)
-      // setImageUrl(response.data.image)
+    }).then(() =>{
+      GetImageList()
     }).catch ((err) => {
       console.log(err)
     })
   }
 
-    //3. 버튼 누르면 해당 html backend로 연락보내기
-    const WantPageInfo = function(page) {
-      console.log(page)
-      
-    }
-
-    //4. 버튼 누르면 해당 file backend로 연락보내기
-    const WantFileInfo = function(file) {
-      var fileData = new FormData();
-      var uploadFile =  document.getElementById("file");
-      fileData.append("file",uploadFile.files[0], 'myfile')
-      fileData.append("name",file)
-      
-       // 전송
-      axios.post('/loader/find/', fileData, {
-        headers: {
-          'Content-Type' : 'multipart/form-data'
-        }
-      }).then ((response) => {
-        console.log(response)
-        if (response.data.file === 'html') {
-          
-          setContent(response.data.ars)
-        }
-        else {
-          setImageUrl(response.data.data)
-        }
-      }).catch ((err) => {
-        console.log(err)
-      })
-    }
-
-    const test = function() {
-      var step;
-      for (step = 0; step < content.length; step++) {
-        var temp = document.getElementById(step)
-        temp.innerHTML = content[step]
-        // console.log(temp)
-      }
-    }
 
   return (
     <div>
-      <input style={{backgroundColor:'red'}} type="file" id="file" name="file" onChange={sendToBack} multiple />
-      <hr/>
-      <p style= {{color:"green"}}>title</p>
-      <div id="spine">{title}</div>
-      <hr/>
-      <p style= {{color:"green"}}>spine</p>
-      <div id="spine">
-        {spine.map((page,index) =>
-            <button key= {index} onClick={(e) => WantPageInfo(page)}> 
-              {page}
-            </button>
-        )}
-      </div>
-      <hr/>
-      <p style= {{color:"green"}}>manifest</p>
-      <div id="spine">
-        {manifest.map((file,index) =>
-            <button key= {index} onClick={(e) => WantFileInfo(file)}> 
-              {file}
-            </button>
-        )}
-      </div>
-      <hr/>
-      <p style= {{color:"green"}}>content</p>
-      <div id="content">
-        {content.map((paragraph,index) =>
-            <li key= {index}>
-              <p id={index}>1</p>
-              {/* <input type="text" style={{height:200, width:200}} defaultValue={paragraph}></input>  */}
-            </li>
-        )}
-      </div>
-      <hr/>
-      <p style= {{color:"green"}}>image</p>
-      <div id="image"> 
-          {imageUrl 
-          ? <img 
-            id ="img"
-            style={{width:500, height:500}} 
-            src={`data:image/jpg;base64,${imageUrl}`} 
-            alt=" is null"
-          /> 
-          : ''}
-      </div>
+      <input style={{backgroundColor:'white'}} type="file" id="file" name="file" onChange={sendToBack} multiple />
+      <button onClick={GetImageList}>ImageButton</button>
+      {/* <button onClick={test}>mybutton</button> */}
 
-      <button onClick={test}>mybutton</button>
+      <Metadata />
+      <TOC />
+      <hr/>
+      <p style= {{color:"green"}}>book content</p>
+      <div>
+        {content && content.map((paragraph,index) =>
+              <ReactP index={index}/>
+        )}
+      </div>
     </div>
   )
 }

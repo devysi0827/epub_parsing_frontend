@@ -1,18 +1,13 @@
 import React from 'react'
 
-function ReactP() {
+function ReactP(props) {
 
-        const {
-            paragraphClass,
-            paragraphId,
-            paragraphContent
-        } = props;
-    
         return (
             <>
-            <p className={paragraphClass} id={paragraphId}>
-                {paragraphContent}
-            </p>
+                <p id= {props.index}>
+                    content
+                </p>
+
             </>
         );
 }
