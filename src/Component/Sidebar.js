@@ -7,13 +7,14 @@ import {
   ManifestState,
   ContentState,
   ImageState,
+  CSSState,
   ImageListState
 } from "../State/RecoilState"
 
 // import Component
 import Metadata from './Metadata';
 import TOC from './TOC';
-import ReactP from './ReactP';
+import Content from './Content';
 
 function Sidebar() {
   
@@ -27,7 +28,9 @@ function Sidebar() {
 
   // const [spine,setSpine] = useState(['null'])
   const [content,setContent] = useRecoilState(ContentState )
-  const [imageUrl,setImageUrl] = useRecoilState(ImageState)
+  const [CSS,setCSS] = useRecoilState(CSSState)
+
+  // const [imageUrl,setImageUrl] = useRecoilState(ImageState)
 
   const GetImageList = function(file) {
     var fileData = new FormData();
@@ -43,6 +46,10 @@ function Sidebar() {
     }).then ((response) => {
       console.log(response.data)
       setImageList(response.data)
+      setCSS(response.data["css"])
+    }).then(()=>{
+      changecss()
+      console.log('css')
     }).catch ((err) => {
       console.log(err)
     })
@@ -68,27 +75,38 @@ function Sidebar() {
       setManifest(response.data.manifest)
     }).then(() =>{
       GetImageList()
+
     }).catch ((err) => {
       console.log(err)
     })
   }
 
+  const changecss = function() {
+    const temp_style = document.getElementById("mycss")
+    temp_style.innerHTML = CSS
+    console.log(temp_style)
+  }
 
   return (
     <div>
       <input style={{backgroundColor:'white'}} type="file" id="file" name="file" onChange={sendToBack} multiple />
-      <button onClick={GetImageList}>ImageButton</button>
+      {/* <button onClick={GetImageList}>ImageButton</button> */}
       {/* <button onClick={test}>mybutton</button> */}
+      <button onClick={changecss}>changecss</button>
 
       <Metadata />
       <TOC />
-      <hr/>
+      <Content />
+      {/* <div>
+        {CSS}
+      </div> */}
+      {/* <hr/>
       <p style= {{color:"green"}}>book content</p>
       <div>
         {content && content.map((paragraph,index) =>
-              <ReactP index={index}/>
+              <EpubComponent index={index}/>
         )}
-      </div>
+      </div> */}
     </div>
   )
 }
