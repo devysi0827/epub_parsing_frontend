@@ -14,15 +14,18 @@ function TOC() {
     const [content,setContent] = useRecoilState(ContentState)
     const [imageList,setImageList] = useRecoilState(ImageListState)
 
-    // useEffect(() => {
-    //     mappingList()
-    //   }, [content]);
+    useEffect(() => {
+        mappingList()
+      }, [content]);
     
     const mappingList = function() {
         var step;
         for (step = 0; step < content.length; step++) {
             var temp = document.getElementById(step)
             console.log(temp)
+            if (temp === null){
+              return
+            }
             if (content[step].slice(0,4) === '<img' ){
                 var temp_image = content[step].split(' ')
                 for ( var i = 0; i < temp_image.length; i++) {
@@ -51,6 +54,7 @@ function TOC() {
             'Content-Type' : 'multipart/form-data'
           }
         }).then ((response) => {
+            console.log(response)
             console.log(response.data.ars)
             setContent(response.data.ars)
         }).then(
@@ -62,7 +66,7 @@ function TOC() {
     
         return (
             <>
-            <button onClick={mappingList}>111</button>
+            {/* <button onClick={mappingList}>111</button> */}
             <hr/>
             <p style= {{color:"green"}}>TOC(목차)</p>
             {manifest.map((page,index) =>

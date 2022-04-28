@@ -1,28 +1,29 @@
-import React, { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import React from 'react';
 import axios from 'axios';
+
+// use Recoil State
+import { useRecoilState } from 'recoil';
 import {
   titleState,
   creatorState,
   ManifestState,
   ContentState,
-  ImageState,
   CSSState,
   ImageListState
 } from "../State/RecoilState"
 
-// import Component
+// import React Component
 import Metadata from './Metadata';
 import TOC from './TOC';
 import Content from './Content';
 
 function Sidebar() {
   
-  /// 0. metadata 변수
+  /// Metadata 변수
   const [title,setTitle] = useRecoilState(titleState)
   const [creator,setCreator] = useRecoilState(creatorState)
 
-  // Toc 변수
+  // TOC(목차) 변수
   const [manifest,setManifest] = useRecoilState(ManifestState)
   const [imageList,setImageList] = useRecoilState(ImageListState)
 
@@ -38,7 +39,7 @@ function Sidebar() {
     fileData.append("file",uploadFile.files[0], 'myfile')
     fileData.append("name",file)
     
-     // 전송
+    // 전송
     axios.post('/loader/image/', fileData, {
       headers: {
         'Content-Type' : 'multipart/form-data'
