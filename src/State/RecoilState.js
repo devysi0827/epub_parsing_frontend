@@ -1,54 +1,31 @@
-import { atom, selector } from 'recoil';
-import { recoilPersist } from 'recoil-persist';
-import axios from 'axios';
-
-
-const { persistAtom } = recoilPersist();
-
-// const arrays = []
-// for (let i = 0; i<30; i++){
-// 	arrays.
-// }
+import { atom } from "recoil";
 
 export const titleState = atom({
-	key: 'title',
-	default: 'title is null',
-	// effects_UNSTABLE: [persistAtom],
+  key: "title",
+  default: "title is null",
 });
 
 export const creatorState = atom({
-	key: 'creator',
-	default: 'creator is null',
-	// effects_UNSTABLE: [persistAtom],
+  key: "creator",
+  default: "creator is null",
 });
 
 export const ManifestState = atom({
-	key: 'manifest',
-	default: ['null'],
-	// effects_UNSTABLE: [persistAtom],
+  key: "manifest",
+  default: ["null"],
 });
 
 export const ContentState = atom({
-	key: 'content',
-	default: ['123'],
-	// effects_UNSTABLE: [persistAtom],
+  key: "content",
+  default: ["Select Epub"],
 });
 
-// export const ImageState = atom({
-// 	key: 'image',
-// 	default: 'null',
-// 	// effects_UNSTABLE: [persistAtom],
-// });
-
 export const ImageListState = atom({
-	key: 'imageList',
-	default: {},
-	// effects_UNSTABLE: [persistAtom],
+  key: "imageList",
+  default: {},
 });
 
 export const CSSState = atom({
-	key: 'CSS',
-	default: '',
-	// effects_UNSTABLE: [persistAtom],
+  key: "CSS",
+  default: "",
 });
-
