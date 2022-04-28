@@ -33,7 +33,7 @@ function TOC() {
         },
       })
       .then((response) => {
-        setContent(response.data.ars);
+        setContent(response.data.fileData);
       })
       .then()
       .catch((err) => {
